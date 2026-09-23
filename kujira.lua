@@ -26,6 +26,7 @@ local function writeLine(line)
 end
 
 local function parseLine(line)
+
     -- check if the line is a Kujira verb
     if line:match("center") then
         local id = line:match("center #([%a_][%w_]*)")
@@ -34,12 +35,16 @@ local function parseLine(line)
             return
         end
 
-        writeLine(id .. [[ {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+        writeLine("#" .. id .. [[ {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }   
         ]])
+    elseif line:match("%f[%a]text%f[%A]") then
+        writeLine("h1, h2, h3, h4, h5, h6, p, a, label, textarea, button, span {")
+    elseif line:match("%f[%a]checkbox%f[%A]") then
+        writeLine("input[type=\"checkbox\"] {")
     else
         -- let normal CSS fall through
         writeLine(line)
@@ -49,6 +54,8 @@ end
 for line in fileHandle:lines() do
     parseLine(line)
 end
+
+print("Kujira successfully generated your CSS file titled " .. outputFile .. ".")
 
 io.close(fileHandle)
 io.close(outputFileHandle)
