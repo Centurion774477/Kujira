@@ -13,6 +13,15 @@ local function writeLine(file_handle, line)
     file_handle:write(line .. "\n")
 end
 
+local function needsSemicolon(line)
+    if line:match("^%s*$") then return false end -- blank
+    if line:match("^%s*/%*") or line:match("%*/%s*$") then return false end -- comments
+    if line:match("^%s*%*") then return false end -- middle of a block comment
+    if line:match("[;{},]%s*$") then return false end -- already terminated or continuing
+
+    return true
+end
+
 -- parse Kujira into CSS
 local function parseLine(file_handle, line)
 
@@ -25,17 +34,25 @@ local function parseLine(file_handle, line)
         end
 
         writeLine(file_handle, "#" .. id .. [[ {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+display: flex;
+align-items: center;
+justify-content: center;
 }   
         ]])
-    elseif line:match("%f[%a]text%f[%A]") then
+    elseif line:match("^%s*text%s*{") then
         writeLine(file_handle, "h1, h2, h3, h4, h5, h6, p, a, label, textarea, button, span {")
     elseif line:match("%f[%a]checkbox%f[%A]") then
         writeLine(file_handle, "input[type=\"checkbox\"] {")
+    elseif line:match("^%s*header%s+{") or line:match("^%s*heading%s+{") then
+        writeLine(file_handle, "h1, h2, h3, h4, h5, h6 {")
     else
         -- let normal CSS fall through
+        
+        -- add a semicolon if the line doesn't already end with one
+        if needsSemicolon(line) then
+            line = line .. ";"
+        end
+
         writeLine(file_handle, line)
     end
 end
