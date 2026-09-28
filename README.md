@@ -1,20 +1,22 @@
 # Kujira
 
-CSS doesn't need a full rewrite, but some actions are way too tedious. That's why Kujira adds some shortcuts to those actions while allowing CSS to fall through.
+CSS doesn't need a full rewrite, but some actions are way too tedious. I wrote Kujira to add some shortcuts to those tedious actions like writing `h1, h2, h3, h4, h5, h6`, while still allowing CSS to fall through so you don't have to learn an entire new language.
 
-Kujira has three features: `center`, `text`, and `checkbox`.
+Kujira will fill in missing semicolons for you, but it is not indentation based like `.sass`.
+
+Below I'll name a Kujira feature, it's usage, and the equivalent CSS.
 
 Center looks like this: `center #stockholm`. Under the hood, it generates: 
 
 ```css
 #stockholm {
     display: flex;
-    flex-direction: column;
     align-items: center;
+    justify-content: center;
 }   
 ```
 
-Right now, center only accepts an id, but that is the main application of centering things.
+Right now, center only accepts an id, but that is the main application of centering things in my experience.
 
 `text` is an alias for the following tags:
 
@@ -47,7 +49,23 @@ h1, h2, h3, h4, h5, h6, p, a, label, textarea, button, span {
 }
 ```
 
-Finally, checkbox. This is the smallest feature so far as it is just an alias for `input[type="checkbox"]`. 
+Similar to this is `header` or `heading`. You can write:
+
+```
+header {
+  color: red
+}
+```
+
+and Kujira will generate
+
+```css
+h1, h2, h3, h4, h5, h6 {
+  color: red;
+}
+```
+
+Finally, checkbox. This is an alias for `input[type="checkbox"]`. 
 
 It looks like:
 
@@ -73,7 +91,7 @@ And since Kujira lets you write normal CSS, you can write something like:
 center #some_thing
 
 text {
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif
 }
 
 checkbox {
@@ -94,8 +112,8 @@ And get:
 ```css
 #some_thing {
     display: flex;
-    flex-direction: column;
     align-items: center;
+    justify-content: center;
 }   
         
 
@@ -115,3 +133,5 @@ button {
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 }
 ```
+
+It's important to remember that Kujira isn't in the same field as Sass or Stylus. Kujira just adds some shortcuts to commonly used things.
