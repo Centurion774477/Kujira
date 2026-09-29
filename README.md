@@ -135,3 +135,29 @@ button {
 ```
 
 It's important to remember that Kujira isn't in the same field as Sass or Stylus. Kujira just adds some shortcuts to commonly used things.
+
+# Use Kujira
+
+First, get Kujira on your machine through any means necessary.
+
+Then, run:
+
+```
+lua kujira.lua <command> <file_in> <file_out>
+```
+
+To transpile a file, use:
+
+```
+lua kujira.lua digest <file> <new_file_name>
+```
+
+To generate a .sass file, use:
+
+```
+lua kujira.lua scaffold <file_name>
+```
+
+Or, you could do the extra work to make it executable and put it on your path so it is globally available.
+
+Cheers!
